@@ -1,4 +1,4 @@
-# Smarkets Project
+# ClearScore Project
 
 This project is set up using React, TypeScript, Tailwind, Vite and Vitest.
 
@@ -11,4 +11,5 @@ To run this project locally:
 ```bash
 npm install
 npm run dev
+npm run test
 ```
