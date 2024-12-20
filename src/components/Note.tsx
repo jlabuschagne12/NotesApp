@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Input } from '@/components/ui'
 import { Textarea } from "@/components/ui/textarea"
 import { LastUpdatedIcon, AddNoteButton, DeleteNoteButton } from './IconButtons';
@@ -48,8 +48,14 @@ export const Note = ({
   
   const [titleError, setTitleError] = useState<boolean>(false);
 
+  const inputRef = useRef<HTMLInputElement>(null);
+
   const debouncedTitle = useDebounce(localTitle, 2000);
   const debouncedBody = useDebounce(localBody, 2000);
+
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.focus();
+  }, []);
 
   useEffect(() => {
     if (localTitle.length > 0) setTitleError(false)
@@ -112,6 +118,7 @@ export const Note = ({
           )}
         </div>
         <Input 
+          ref={inputRef}
           className={`border-0 border-b border-input rounded-none focus-visible:ring-0 focus-visible:border-b-2 ${titleError ? "focus-visible:border-red-500 border-red-500/90" : "focus-visible:border-ring" }`}
           value={localTitle}
           onChange={updateLocalTitle}
