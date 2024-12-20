@@ -16,7 +16,7 @@ npm run test
 
 ## Running the Project on the Web
 
-The project is hosted and can be viewed at [https://smarkets-jean.web.app](https://smarkets-jean.web.app).
+The project is hosted and can be viewed at [ideasboard-jean.web.app](ideasboard-jean.web.app).
 
 ## Things to try
 
