@@ -13,3 +13,16 @@ npm install
 npm run dev
 npm run test
 ```
+
+## Running the Project on the Web
+
+The project is hosted and can be viewed at [https://smarkets-jean.web.app](https://smarkets-jean.web.app).
+
+## Things to try
+
+- Changing size of tiles with slider
+- Changing spacing of gris with slider
+- Changing color of tile
+- Sorting tiles alphabetically and by updated time (Asc and Des)
+- Deleting all tiles
+- Refreshing page to ensure data is stored in localStorage
