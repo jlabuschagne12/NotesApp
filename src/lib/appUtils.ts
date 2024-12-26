@@ -3,7 +3,9 @@ import { NoteType } from "@/types";
 export const sortNotesAlpha = (notes: NoteType[], isAscending: boolean): NoteType[] => {
   const exempt = notes[0];
   const sorted = [...notes.slice(1)].sort((a, b) =>
-    isAscending ? a.title.localeCompare(b.title) : b.title.localeCompare(a.title)
+    isAscending 
+      ? a.title.localeCompare(b.title) 
+      : b.title.localeCompare(a.title)
   );
   return [exempt, ...sorted];
 };
@@ -18,6 +20,9 @@ export const sortNotesByTime = (notes: NoteType[], isAscending: boolean): NoteTy
   return [exempt, ...sorted];
 };
 
+// following function checks if notes are sorted in correct order as displayed on the sorting tabs
+// uses a for loop to check each item and assess whether the xort is still correct
+
 export const areNotesSorted = (
   notes: NoteType[],
   compare: (a: NoteType, b: NoteType) => number,
@@ -30,6 +35,8 @@ export const areNotesSorted = (
   }
   return true;
 };
+
+// calculate the x/y positions of each note based on user set cell width and note width
 
 export const calculatePositions = (
   notes: NoteType[],

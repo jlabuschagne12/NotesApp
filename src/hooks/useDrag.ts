@@ -1,4 +1,4 @@
-import { NoteType } from "@/types";
+import { useNotes } from ".";
 
 type DragHandlers = {
   onDragStart: (e: React.DragEvent, index: number) => void;
@@ -6,9 +6,9 @@ type DragHandlers = {
   onDrop: (e: React.DragEvent, dropIndex: number) => void;
 };
 
-export const useDrag = (
-  setNotes: React.Dispatch<React.SetStateAction<NoteType[]>>
-): DragHandlers => {
+export const useDrag = (): DragHandlers => {
+  const { setNotes } = useNotes()
+
   const onDragStart = (e: React.DragEvent, index: number) => {
     e.dataTransfer.setData("dragIndex", index.toString());
   };

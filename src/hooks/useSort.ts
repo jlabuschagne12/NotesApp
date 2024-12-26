@@ -1,39 +1,35 @@
 import { useEffect } from "react";
-import { useSessionStorage } from "@uidotdev/usehooks";
+import { useLocalStorage } from "@uidotdev/usehooks";
 import { sortNotesAlpha, sortNotesByTime, areNotesSorted } from "../lib/appUtils";
-import { NoteType } from "@/types";
+import { useNotes } from ".";
 
-export const useSort = (
-  notes: NoteType[],
-  setNotes: React.Dispatch<React.SetStateAction<NoteType[]>>,
-  initialSort: string
-) => {
-  const [sort, setSort] = useSessionStorage<string>("sort", initialSort);
-
-  // Apply sorting based on the `sort` state
-  useEffect(() => {
-    if (sort === "alphAsc") sortAlph(true);
-    if (sort === "alphDes") sortAlph(false);
-    if (sort === "timeAsc") sortTime(true);
-    if (sort === "timeDes") sortTime(false);
-  }, [sort]);
-
-  // Verify notes are sorted after order change via drag
-  useEffect(() => {
-    if (sort === "alphAsc" && !isAlphSorted(true)) setSort("");
-    if (sort === "timeAsc" && !isTimeSorted(true)) setSort("");
-    if (sort === "alphDes" && !isAlphSorted(false)) setSort("");
-    if (sort === "timeDes" && !isTimeSorted(false)) setSort("");
-  }, [notes]);
-
-  const isAlphSorted = (isAscending: boolean) =>
-    areNotesSorted(notes, (a, b) => a.title.localeCompare(b.title), isAscending);
+export const useSort = () => {
+  const { notes, setNotes } = useNotes()
+  const [sortLabel, setSortLabel] = useLocalStorage("sort", "");
   
-  const isTimeSorted = (isAscending: boolean) =>
-    areNotesSorted(notes, (a, b) => new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime(), isAscending);
+  const sortAlph = (isAscending: boolean) => {
+    setNotes(sortNotesAlpha(notes, isAscending));
+    setSortLabel(isAscending ? "alphAsc" : "alphDes")
+  }
+  const sortTime = (isAscending: boolean) => {
+    setNotes(sortNotesByTime(notes, isAscending));
+    setSortLabel(isAscending ? "timeAsc" : "timeDes")
+  }
+  // Verify notes are sorted after order change eg: drag or new note
+  useEffect(() => {
 
-  const sortAlph = (isAscending: boolean) => setNotes((prev) => sortNotesAlpha(prev, isAscending));
-  const sortTime = (isAscending: boolean) => setNotes((prev) => sortNotesByTime(prev, isAscending));
+    const isAlphSorted = (isAscending: boolean) =>
+      areNotesSorted(notes, (a, b) => a.title.localeCompare(b.title), isAscending);
+    
+    const isTimeSorted = (isAscending: boolean) =>
+      areNotesSorted(notes, (a, b) => new Date(a.updatedAt).getTime() - new Date(b.updatedAt).getTime(), isAscending);
 
-  return { sort, setSort };
+    if (sortLabel === "alphAsc" && !isAlphSorted(true)) setSortLabel("");
+    if (sortLabel === "timeAsc" && !isTimeSorted(true)) setSortLabel("");
+    if (sortLabel === "alphDes" && !isAlphSorted(false)) setSortLabel("");
+    if (sortLabel === "timeDes" && !isTimeSorted(false)) setSortLabel("");
+
+  }, [notes, setSortLabel, sortLabel]);
+
+  return { sortLabel, sortAlph, sortTime };
 };

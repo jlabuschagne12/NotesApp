@@ -1,9 +1,9 @@
 import Note from "./Note"
 import NoteStack from "./NoteStack"
-import NavBar from "./NavBar"
+import TopBar from "./TopBar"
 
 export {
   Note,
   NoteStack,
-  NavBar,
+  TopBar,
 }
