@@ -1,20 +1,23 @@
 import { useDebounce, useLocalStorage } from "@uidotdev/usehooks";
 import { useEffect, useState, useRef } from "react";
 import "./App.css";
-import { Note, TopBar, NoteStack } from "./components";
+import { Note, Header, NoteStack } from "./components";
 import { calculatePositions } from "./lib/appUtils";
 import { useNotes } from "./hooks";
 
 const App = () => {
   // Persistent state for layout, and user preferences
-  const [positions, setPositions] = useLocalStorage<{ x: number; y: number }[]>("positions", []);
+  const [positions, setPositions] = useLocalStorage<{ x: number; y: number }[]>(
+    "positions",
+    []
+  );
   const [containerWidth, setContainerWidth] = useState(0);
   const [sizeFactor, setSizeFactor] = useLocalStorage("sizeFactor", 10);
   const [cellWidth, setCellWidth] = useLocalStorage("cellWidth", 200);
   const containerRef = useRef<HTMLDivElement>(null);
 
   const { notes } = useNotes();
-  
+
   // Debounced width to optimize resizing performance
   const debouncedWidth = useDebounce(containerWidth, 100);
 
@@ -33,7 +36,7 @@ const App = () => {
   }, [containerRef]);
 
   useEffect(() => {
-      // Recalculate positions for notes based on container width
+    // Recalculate positions for notes based on container width
     const recalculatePositions = (width: number) => {
       setPositions(calculatePositions(notes, width, cellWidth));
     };
@@ -44,11 +47,20 @@ const App = () => {
   return (
     <div className="h-screen flex flex-col">
       {/* Navigation bar for user controls */}
-      <TopBar sizeFactor={sizeFactor} onSizeFactorChange={setSizeFactor} cellWidth={cellWidth} onWidthChange={setCellWidth}
+      <Header
+        sizeFactor={sizeFactor}
+        onSizeFactorChange={setSizeFactor}
+        cellWidth={cellWidth}
+        onWidthChange={setCellWidth}
       />
       <div ref={containerRef} className="relative grow m-8 overflow-auto">
         {/* Stack of notes for styling */}
-        <NoteStack colorIndex={notes[0].colorIndex} stackNumber={10} notesTotal={notes.length} sizeFactor={sizeFactor} />
+        <NoteStack
+          colorIndex={notes[0].colorIndex}
+          stackNumber={10}
+          notesTotal={notes.length}
+          sizeFactor={sizeFactor}
+        />
         {/* Render each note */}
         {notes.map((note, index) => (
           <Note

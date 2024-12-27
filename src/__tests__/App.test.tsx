@@ -1,19 +1,13 @@
 import React from "react";
-import {render, screen, fireEvent, } from "@testing-library/react"
+import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import {
-  TooltipProvider,
-} from "@/components/ui/tooltip"
+import { TooltipProvider } from "@/components/ui/tooltip";
 import { expect, it } from "vitest";
 
 import App from "../App";
 
 const renderWithProviders = (ui: React.ReactElement) => {
-  return render(
-    <TooltipProvider>
-      {ui}
-    </TooltipProvider>
-  );
+  return render(<TooltipProvider>{ui}</TooltipProvider>);
 };
 
 it("renders the application with an initial note", () => {
@@ -60,7 +54,7 @@ it("updates the title of a note", async () => {
   const noteTitleInput = notes[0];
 
   // Simulate typing into the title input
-  await userEvent.type(noteTitleInput, "Updated Note")
+  await userEvent.type(noteTitleInput, "Updated Note");
 
   expect(noteTitleInput).toHaveValue("Updated Note");
 });
@@ -78,7 +72,7 @@ it("deletes a note", async () => {
   fireEvent.click(addButton);
 
   notes = screen.getAllByPlaceholderText("Add title");
-  const originalLength = Number(notes.length)
+  const originalLength = Number(notes.length);
 
   const deleteButtons = screen.getAllByRole("deleteNote");
 

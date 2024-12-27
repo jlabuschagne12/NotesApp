@@ -1,9 +1,5 @@
-import Note from "./Note"
-import NoteStack from "./NoteStack"
-import TopBar from "./TopBar"
+import Note from "./Note";
+import NoteStack from "./NoteStack";
+import Header from "./Header";
 
-export {
-  Note,
-  NoteStack,
-  TopBar,
-}
+export { Note, NoteStack, Header };
