@@ -19,6 +19,14 @@ type HeaderProps = {
   onWidthChange: (value: number) => void;
 };
 
+const SLIDER_SIZE_MAX = 25;
+const SLIDER_SIZE_MIN = 6;
+const SLIDER_SIZE_STEP = 1;
+
+const SLIDER_WIDTH_MAX = 600;
+const SLIDER_WIDTH_MIN = 80;
+const SLIDER_WIDTH_STEP = 10;
+
 const Header = ({
   sizeFactor,
   onSizeFactorChange,
@@ -45,16 +53,16 @@ const Header = ({
           className="mr-8"
         >
           <TabsList>
-            <TabsTrigger value="alphAsc">
+            <TabsTrigger value="alphAsc" title="sortAlphAscBtn">
               <ArrowDownAZ />
             </TabsTrigger>
-            <TabsTrigger value="alphDes">
+            <TabsTrigger value="alphDes" title="sortAlphDesBtn">
               <ArrowUpZA />
             </TabsTrigger>
-            <TabsTrigger value="timeDes">
+            <TabsTrigger value="timeDes" title="sortTimeDesBtn">
               <ClockArrowUp />
             </TabsTrigger>
-            <TabsTrigger value="timeAsc">
+            <TabsTrigger value="timeAsc" title="sortTimeAscBtn">
               <ClockArrowDown />
             </TabsTrigger>
           </TabsList>
@@ -65,6 +73,7 @@ const Header = ({
             variant="destructive"
             size="icon"
             disabled={notes.length < 2}
+            title="deleteAllNotes"
           >
             <Bomb />
           </Button>
@@ -75,9 +84,9 @@ const Header = ({
           <Scaling className="mr-4 text-muted-foreground" />
           <Slider
             defaultValue={[sizeFactor]}
-            max={25}
-            min={6}
-            step={1}
+            max={SLIDER_SIZE_MAX}
+            min={SLIDER_SIZE_MIN}
+            step={SLIDER_SIZE_STEP}
             onValueChange={(val) => onSizeFactorChange(val[0])}
           />
         </div>
@@ -85,9 +94,9 @@ const Header = ({
           <LayoutGrid className="mr-4 text-muted-foreground" />
           <Slider
             defaultValue={[cellWidth]}
-            max={600}
-            min={80}
-            step={10}
+            max={SLIDER_WIDTH_MAX}
+            min={SLIDER_WIDTH_MIN}
+            step={SLIDER_WIDTH_STEP}
             onValueChange={(val) => onWidthChange(val[0])}
           />
         </div>

@@ -4,7 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { expect, it } from "vitest";
 
-import App from "../App";
+import App from "../src/App";
 
 const renderWithProviders = (ui: React.ReactElement) => {
   return render(<TooltipProvider>{ui}</TooltipProvider>);
@@ -20,10 +20,10 @@ it("renders the application with an initial note", () => {
 
 it("adds a new note without title", async () => {
   renderWithProviders(<App />);
-  const addButton = screen.getByRole("addNote");
+  const addButton = screen.getByTitle("addNote");
 
   // Simulate clicking the add button
-  fireEvent.click(addButton);
+  userEvent.click(addButton);
 
   const notes = screen.getAllByPlaceholderText("Add title");
 
@@ -33,7 +33,7 @@ it("adds a new note without title", async () => {
 
 it("adds a new note with title", async () => {
   renderWithProviders(<App />);
-  const addButton = screen.getByRole("addNote");
+  const addButton = screen.getByTitle("addNote");
   let notes = screen.getAllByPlaceholderText("Add title");
 
   const firstNoteTitleInput = notes[0];
@@ -62,7 +62,7 @@ it("updates the title of a note", async () => {
 it("deletes a note", async () => {
   renderWithProviders(<App />);
 
-  const addButton = screen.getByRole("addNote");
+  const addButton = screen.getByTitle("addNote");
   let notes = screen.getAllByPlaceholderText("Add title");
 
   const firstNoteTitleInput = notes[0];

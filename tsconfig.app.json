@@ -25,10 +25,8 @@
     /* Shadcn init code*/
     "baseUrl": ".",
     "paths": {
-      "@/*": [
-        "./src/*"
-      ]
+      "@/*": ["./src/*"]
     }
   },
-  "include": ["src"]
+  "include": ["src", "tests", "__tests__"]
 }

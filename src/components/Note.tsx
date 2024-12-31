@@ -105,6 +105,7 @@ export const Note = ({
         borderColor: colors[colorIndex],
         transformOrigin: "0 0",
       }}
+      title="noteShell"
     >
       <div>
         <div className="h-8 flex w-full justify-between p-1.5">
@@ -119,12 +120,13 @@ export const Note = ({
                   key={index}
                   onClick={() => changeColor(index)}
                   className={cn(
-                    "h-3 w-3 rounded-full",
+                    `h-3 w-3 rounded-full color-${color}`,
                     index === colorIndex && "border-2 border-ring"
                   )}
                   style={{
                     backgroundColor: color,
                   }}
+                  title="colorButton"
                 />
               ))
             ) : (
@@ -146,7 +148,7 @@ export const Note = ({
                 onClick={addNoteClicked}
                 variant="ghost"
                 size="iconSmall"
-                role="addNote"
+                title="addNote"
               >
                 <Plus />
               </Button>
@@ -157,7 +159,7 @@ export const Note = ({
                 onClick={() => deleteNote(id)}
                 variant="ghost"
                 size="iconSmall"
-                role="deleteNote"
+                title="deleteNote"
               >
                 <Trash />
               </Button>
