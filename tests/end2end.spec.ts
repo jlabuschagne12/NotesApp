@@ -118,6 +118,36 @@ test.describe("Delete Notes", () => {
   });
 });
 
+test.describe("Sort Notes", () => {
+  test("should sort notes alphabetically ascending", async ({ page }) => {
+    await createDefaultTodosWithIndividualColors(page);
+
+    const sortButton = page.getByTitle("sortAlphAscBtn");
+    await sortButton.click();
+
+    //
+    // NOTHING HAPPENS AFTER SORT BUTTON IS CLICKED
+    //
+
+    const noteTitleInputs = page.locator('input[placeholder="Add title"]');
+    const noteTitles = [];
+    for (let i = 0; i < (await noteTitleInputs.count()); i++) {
+      noteTitles.push(await noteTitleInputs.nth(i).inputValue());
+    }
+
+    console.log(noteTitles);
+
+    const expectedTitles = [...NOTE_TITLES].sort((a, b) => a.localeCompare(b));
+    expect(noteTitles.slice(1)).toEqual(expectedTitles);
+  });
+  // test("should sort notes alphabetically descending", async ({ page }) => {
+  // });
+  // test("should sort notes by time ascending", async ({ page }) => {
+  // });
+  // test("should sort notes by time descending", async ({ page }) => {
+  // });
+});
+
 async function checkNumberOfTodosInLocalStorage(page: Page, expected: number) {
   return await page.waitForFunction((e) => {
     return JSON.parse(localStorage["notes"]).length === e;
