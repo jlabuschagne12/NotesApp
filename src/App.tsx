@@ -1,6 +1,5 @@
 import { useDebounce, useLocalStorage } from "@uidotdev/usehooks";
 import { useEffect, useState, useRef } from "react";
-import "./App.css";
 import { Note, Header, NoteStack } from "./components";
 import { calculatePositions } from "./lib/appUtils";
 import { useNotes } from "./hooks";

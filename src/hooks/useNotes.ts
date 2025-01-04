@@ -1,10 +1,9 @@
 import { useLocalStorage } from "@uidotdev/usehooks";
 import { v4 as uuidv4 } from "uuid";
 import { NoteType } from "@/types";
-import { useToast } from "@/hooks/use-toast"
+import { useToast } from "@/hooks/use-toast";
 
 export const useNotes = () => {
-  
   const { toast } = useToast();
   const [notes, setNotes] = useLocalStorage<NoteType[]>("notes", [
     {
@@ -33,7 +32,9 @@ export const useNotes = () => {
   const updateNote = (id: string, updates: Partial<NoteType>) => {
     setNotes(
       notes.map((note) =>
-        note.id === id ? { ...note, ...updates, updatedAt: new Date().toISOString() } : note
+        note.id === id
+          ? { ...note, ...updates, updatedAt: new Date().toISOString() }
+          : note
       )
     );
     toast({ description: "Note updated." });
@@ -43,7 +44,7 @@ export const useNotes = () => {
     setNotes(notes.filter((note) => note.id !== id));
     toast({ description: "Note deleted." });
   };
-  
+
   const deleteAllNotes = () => {
     setNotes(notes.filter((_, index) => index === 0));
     toast({ description: "All Notes deleted." });

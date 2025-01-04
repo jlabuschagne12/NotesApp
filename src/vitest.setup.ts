@@ -1,4 +1,4 @@
-import "@testing-library/jest-dom"
+import "@testing-library/jest-dom";
 
 class ResizeObserver {
   observe() {}
@@ -6,5 +6,4 @@ class ResizeObserver {
   disconnect() {}
 }
 
-// Attach mock to global object
 global.ResizeObserver = ResizeObserver;

@@ -120,30 +120,61 @@ test.describe("Delete Notes", () => {
 
 test.describe("Sort Notes", () => {
   test("should sort notes alphabetically ascending", async ({ page }) => {
-    await createDefaultTodosWithIndividualColors(page);
+    await addNotes(page, ["B", "C", "A", "D"]);
 
-    const sortButton = page.getByTitle("sortAlphAscBtn");
+    await page.waitForTimeout(3000);
+
+    const currValues = await page
+      .locator('input[placeholder="Add title"]')
+      .evaluateAll((elements) =>
+        elements.map((el) => (el as HTMLInputElement).value)
+      );
+
+    expect(currValues).toStrictEqual(["", "D", "A", "C", "B"]);
+
+    const sortButton = page.getByRole("button", { name: "sortAlphAsc" });
+
     await sortButton.click();
 
-    //
-    // NOTHING HAPPENS AFTER SORT BUTTON IS CLICKED
-    //
+    const newValues = await page
+      .locator('input[placeholder="Add title"]')
+      .evaluateAll((elements) =>
+        elements.map((el) => (el as HTMLInputElement).value)
+      );
 
-    const noteTitleInputs = page.locator('input[placeholder="Add title"]');
-    const noteTitles = [];
-    for (let i = 0; i < (await noteTitleInputs.count()); i++) {
-      noteTitles.push(await noteTitleInputs.nth(i).inputValue());
-    }
+    console.log(newValues);
 
-    console.log(noteTitles);
-
-    const expectedTitles = [...NOTE_TITLES].sort((a, b) => a.localeCompare(b));
-    expect(noteTitles.slice(1)).toEqual(expectedTitles);
+    expect(newValues).toStrictEqual(["", "A", "B", "C", "D"]);
   });
   // test("should sort notes alphabetically descending", async ({ page }) => {
   // });
-  // test("should sort notes by time ascending", async ({ page }) => {
-  // });
+  test("should sort notes by time ascending", async ({ page }) => {
+    await addNotes(page, ["1st", "2nd", "3rd", "4th"]);
+
+    await page.waitForTimeout(3000);
+
+    const currValues = await page
+      .locator('input[placeholder="Add title"]')
+      .evaluateAll((elements) =>
+        elements.map((el) => (el as HTMLInputElement).value)
+      );
+
+    expect(currValues).toStrictEqual(["", "4th", "3rd", "2nd", "1st"]);
+
+    const sortButton = page.getByRole("button", { name: "sortTimeAsc" });
+
+    await sortButton.click();
+
+    const newValues = await page
+      .locator('input[placeholder="Add title"]')
+      .evaluateAll((elements) =>
+        elements.map((el) => (el as HTMLInputElement).value)
+      );
+
+    console.log(newValues);
+
+    expect(newValues).toStrictEqual(["", "4th", "3rd", "2nd", "1st"]);
+  });
   // test("should sort notes by time descending", async ({ page }) => {
   // });
 });
@@ -161,12 +192,23 @@ async function createDefaultTodosWithIndividualColors(page: Page) {
       .first();
     await noteTitleInput.nth(0).fill(NOTE_TITLES[i]);
 
-    const noteColorButtons = page.locator('button[title="colorButton"]');
-    await noteColorButtons.nth(i).click();
+    const noteColorButtons = await page.getByLabel("colorButton").all();
+    await noteColorButtons[i].click();
 
-    const noteAddButton = page.getByTitle("addNote");
+    const noteAddButton = page.getByRole("button", { name: "add" });
     await noteAddButton.click();
   }
-  const noteColorButtons = page.locator('button[title="colorButton"]');
-  await noteColorButtons.nth(NOTE_TITLES.length).click();
+  const noteColorButtons = await page.getByLabel("colorButton").all();
+  await noteColorButtons[NOTE_TITLES.length].click();
 }
+
+const addNotes = async (page: Page, noteTitles: string[]) => {
+  for (const noteTitle of noteTitles) {
+    // Need to redeclare add button on every loop as it gets reproduced on each note add
+    const addButton = page.getByRole("button", { name: /add/i });
+    // Using getAllByPlaceholderText to select first one
+    const titleInput = page.locator('input[placeholder="Add title"]').first();
+    await titleInput.fill(noteTitle);
+    await addButton.click();
+  }
+};

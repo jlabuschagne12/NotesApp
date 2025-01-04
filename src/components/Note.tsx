@@ -105,7 +105,7 @@ export const Note = ({
         borderColor: colors[colorIndex],
         transformOrigin: "0 0",
       }}
-      title="noteShell"
+      aria-label="noteShell"
     >
       <div>
         <div className="h-8 flex w-full justify-between p-1.5">
@@ -126,7 +126,7 @@ export const Note = ({
                   style={{
                     backgroundColor: color,
                   }}
-                  title="colorButton"
+                  aria-label="colorButton"
                 />
               ))
             ) : (
@@ -148,7 +148,7 @@ export const Note = ({
                 onClick={addNoteClicked}
                 variant="ghost"
                 size="iconSmall"
-                title="addNote"
+                aria-label="add"
               >
                 <Plus />
               </Button>
@@ -159,7 +159,7 @@ export const Note = ({
                 onClick={() => deleteNote(id)}
                 variant="ghost"
                 size="iconSmall"
-                title="deleteNote"
+                aria-label="delete"
               >
                 <Trash />
               </Button>

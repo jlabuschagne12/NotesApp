@@ -1,6 +1,5 @@
 import { Slider } from "@/components/ui/slider";
 import { Button } from "@/components/ui";
-import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   ArrowDownAZ,
   ArrowUpZA,
@@ -33,47 +32,53 @@ const Header = ({
   cellWidth,
   onWidthChange,
 }: HeaderProps) => {
-  const { sortLabel, sortAlph, sortTime } = useSort();
+  const { sortAlph, sortTime } = useSort();
   const { deleteAllNotes, notes } = useNotes();
-
-  const sortNotes = (sortVal: string) => {
-    if (sortVal === "alphAsc") return sortAlph(true);
-    if (sortVal === "timeAsc") return sortTime(true);
-    if (sortVal === "alphDes") return sortAlph(false);
-    if (sortVal === "timeDes") return sortTime(false);
-  };
 
   return (
     <header className="flex flex-col md:flex-row-reverse justify-between items-stretch md:items-center px-10 py-5">
       <div className="flex justify-between mb-4 md:mb-0">
-        <Tabs
-          defaultValue="none"
-          value={sortLabel}
-          onValueChange={sortNotes}
-          className="mr-8"
-        >
-          <TabsList>
-            <TabsTrigger value="alphAsc" title="sortAlphAscBtn">
-              <ArrowDownAZ />
-            </TabsTrigger>
-            <TabsTrigger value="alphDes" title="sortAlphDesBtn">
-              <ArrowUpZA />
-            </TabsTrigger>
-            <TabsTrigger value="timeDes" title="sortTimeDesBtn">
-              <ClockArrowUp />
-            </TabsTrigger>
-            <TabsTrigger value="timeAsc" title="sortTimeAscBtn">
-              <ClockArrowDown />
-            </TabsTrigger>
-          </TabsList>
-        </Tabs>
+        <div className="space-x-2 mr-8">
+          <Button
+            aria-label="sortAlphAsc"
+            onClick={() => sortAlph(true)}
+            variant="outline"
+            size="icon"
+          >
+            <ArrowDownAZ />
+          </Button>
+          <Button
+            aria-label="sortAlphDes"
+            onClick={() => sortAlph(false)}
+            variant="outline"
+            size="icon"
+          >
+            <ArrowUpZA />
+          </Button>
+          <Button
+            aria-label="sortTimeDes"
+            onClick={() => sortTime(false)}
+            variant="outline"
+            size="icon"
+          >
+            <ClockArrowUp />
+          </Button>
+          <Button
+            aria-label="sortTimeAsc"
+            onClick={() => sortTime(true)}
+            variant="outline"
+            size="icon"
+          >
+            <ClockArrowDown />
+          </Button>
+        </div>
         <IconTooltip tooltipText="Delete All Notes">
           <Button
             onClick={deleteAllNotes}
             variant="destructive"
             size="icon"
             disabled={notes.length < 2}
-            title="deleteAllNotes"
+            aria-label="deleteAll"
           >
             <Bomb />
           </Button>
